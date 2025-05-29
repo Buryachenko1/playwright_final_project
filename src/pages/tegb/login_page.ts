@@ -9,14 +9,18 @@ export class LoginPage {
   private readonly passwordInput: Locator;
   private readonly loginButton: Locator;
   private readonly registrationButton: Locator;
+  private readonly registrationSuccessMessage: Locator;
 
   constructor(page: Page) {
     this.page = page;
     this.usernameInput = page.locator("input[data-testid='username-input']");
     this.passwordInput = page.locator("input[data-testid='password-input']");
-    this.loginButton = page.locator("button[data-test-id='submit-button']");
+    this.loginButton = page.locator("button[data-testid='submit-button']");
     this.registrationButton = page.locator(
       "button[data-testid='register-button']"
+    );
+    this.registrationSuccessMessage = page.locator(
+      "div[data-testid='success-message']"
     );
   }
 
@@ -24,6 +28,7 @@ export class LoginPage {
     await this.page.goto(this.url);
     return this;
   }
+
   async typeUsername(username: string): Promise<LoginPage> {
     await expect(this.usernameInput).toBeVisible();
     await this.usernameInput.fill(username);
@@ -54,5 +59,12 @@ export class LoginPage {
     await expect(this.registrationButton).toBeVisible();
     await this.registrationButton.click();
     return new RegistrationPage(this.page);
+  }
+  async verifyRegistrationSuccess(): Promise<LoginPage> {
+    await expect(this.registrationSuccessMessage).toBeVisible();
+    await expect(this.registrationSuccessMessage).toContainText(
+      "Registrace úspěšná"
+    );
+    return this;
   }
 }

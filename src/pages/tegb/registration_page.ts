@@ -10,7 +10,6 @@ export class RegistrationPage {
   private readonly emailInput: Locator;
   private readonly passwordInput: Locator;
   private readonly confirmRegistrationButton: Locator;
-  private readonly registrationSuccessMessage: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -19,9 +18,6 @@ export class RegistrationPage {
     this.passwordInput = page.locator("input[data-testid='password-input']");
     this.confirmRegistrationButton = page.locator(
       "button[data-testid='submit-button']"
-    );
-    this.registrationSuccessMessage = page.locator(
-      "div[data-test-id='success-message']"
     );
   }
 
@@ -41,14 +37,14 @@ export class RegistrationPage {
   async typePassword(password: string): Promise<RegistrationPage> {
     await expect(this.usernameInput).toBeVisible();
     await this.passwordInput.fill(password);
-    await expect(this.usernameInput).toHaveValue(password);
+    await expect(this.passwordInput).toHaveValue(password);
     return this;
   }
 
   async typeEmail(email: string): Promise<RegistrationPage> {
     await expect(this.usernameInput).toBeVisible();
     await this.emailInput.fill(email);
-    await expect(this.usernameInput).toHaveValue(email);
+    await expect(this.emailInput).toHaveValue(email);
     return this;
   }
   async submitRegistrationForm(): Promise<LoginPage> {
@@ -60,16 +56,10 @@ export class RegistrationPage {
     username: string,
     email: string,
     password: string
-  ): Promise<LoginPage> {
+  ): Promise<RegistrationPage> {
     await this.typeUsername(username);
     await this.typeEmail(email);
     await this.typePassword(password);
-    return new LoginPage(this.page);
-  }
-  async verifyRegistrationSuccess(): Promise<void> {
-    await expect(this.registrationSuccessMessage).toBeVisible();
-    await expect(this.registrationSuccessMessage).toContainText(
-      "Registrace úspěšná"
-    );
+    return this;
   }
 }

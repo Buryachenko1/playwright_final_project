@@ -1,5 +1,5 @@
 import { APIRequestContext, APIResponse, expect } from "@playwright/test";
-import { RegistrationPage } from "../../src/pages/tegb/registration_page";
+import { RegistrationPage } from "../pages/tegb/registration_page";
 
 export class AccountCreationAPI {
   private readonly request: APIRequestContext;
@@ -7,13 +7,12 @@ export class AccountCreationAPI {
     "https://tegb-backend-877a0b063d29.herokuapp.com/tegb/accounts/create";
   private readonly loginUrl =
     "https://tegb-backend-877a0b063d29.herokuapp.com/tegb/login";
-  private bearerToken: string | undefined;
 
   constructor(request: APIRequestContext) {
     this.request = request;
   }
 
-  async loginAPI(username: string, password: string): Promise<APIResponse> {
+  async loginAPI(username: string, password: string): Promise<string> {
     const response = await this.request.post(this.loginUrl, {
       data: {
         username,
@@ -26,12 +25,12 @@ export class AccountCreationAPI {
 
     expect(response.status()).toBe(201);
     const body = await response.json();
-    this.bearerToken = body.bearerToken;
-
-    return response;
+    const accessToken = body.access_token;
+    return body.access_token;
   }
 
   async createAccountAPI(
+    accessToken: string,
     startBalance: number,
     type: string
   ): Promise<APIResponse> {
@@ -42,11 +41,11 @@ export class AccountCreationAPI {
       },
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${this.bearerToken}`,
+        Authorization: `Bearer ${accessToken}`,
       },
     });
 
-    expect(response.ok()).toBeTruthy();
+    expect(response.status()).toBe(201);
     return response;
   }
 
