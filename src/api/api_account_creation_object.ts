@@ -21,8 +21,8 @@ export class AccountCreationAPI {
     expect(response.status()).toBe(201);
 
     const body = await response.json();
-    console.log("Login response body:", body);
     expect(body).toHaveProperty("access_token");
+    expect(body.access_token).toBeDefined();
     return body.access_token;
   }
 
@@ -43,9 +43,6 @@ export class AccountCreationAPI {
     });
 
     expect(response.status()).toBe(201);
-
-    console.log("Account creation response status:", response.status());
-    console.log("Account creation response body:", await response.text());
     return response;
   }
 

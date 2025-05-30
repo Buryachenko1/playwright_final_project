@@ -9,10 +9,7 @@ import {
   expectResponseToMatchSchema,
 } from "../utils/responseSchema.ts";
 
-test("E2E Registration and Account Creation via FE and API", async ({
-  page,
-  request,
-}) => {
+test("E2E User Setup", async ({ page, request }) => {
   const loginPage = new LoginPage(page);
   const registrationPage = new RegistrationPage(page);
   const dashboardPage = new DashboardPage(page);
@@ -25,14 +22,10 @@ test("E2E Registration and Account Creation via FE and API", async ({
   const phone = faker.phone.number();
   const age = faker.number.int({ min: 18, max: 65 });
   const password = faker.internet.password();
-  const startBalance = 25000;
+  const startBalance = faker.number.int({ min: 1, max: 10000000 });
   const type = "Test";
 
-  console.log("Used username:", username);
-  console.log("Used password:", password);
-
-  // Frontend steps (registration and UI validation)
-  await test.step("Register new user via FE", async () => {
+  await test.step("Register user", async () => {
     await loginPage
       .openTegB()
       .then((login) => login.clickRegistration())
@@ -43,8 +36,22 @@ test("E2E Registration and Account Creation via FE and API", async ({
       .then((login) => login.verifyRegistrationSuccess());
   });
 
-  // API steps
-  await test.step("Login via API and create account", async () => {
+  await test.step("Login user", async () => {
+    await loginPage
+      .openTegB()
+      .then((login) => login.loginWithCredentials(username, password))
+      .then((dashboard) => dashboard.verifyDashboardIsVisible());
+  });
+
+  await test.step("Update profile", async () => {
+    await dashboardPage
+      .fillAccountProfile(name, surname, email, phone, age)
+      .then((dashboard) =>
+        dashboard.verifyProfileChanges(name, surname, email, phone, age)
+      );
+  });
+
+  await test.step("Create account (API)", async () => {
     const response = await accountApi.loginAndCreateAccountAPI(
       username,
       password,
@@ -52,31 +59,14 @@ test("E2E Registration and Account Creation via FE and API", async ({
       type
     );
     const body = await response.json();
-    console.log("API response body:", body);
     expectResponseToMatchSchema(body, expectedBody(type, startBalance));
   });
 
-  await test.step("Login as Registered User via FE", async () => {
-    await loginPage
-      .openTegB()
-      .then((login) => login.loginWithCredentials(username, password))
-      .then((dashboard) => dashboard.verifyDashboardIsVisible());
+  await test.step("Check account details", async () => {
+    await dashboardPage.verifyAccountDetails();
+  });
 
-    await test.step("Edit and verify user profile via FE", async () => {
-      await dashboardPage
-        .fillAccountProfile(name, surname, email, phone, age)
-        // .then((dashboard) => dashboard.verifyUpdateSuccess())
-        .then((dashboard) =>
-          dashboard.verifyProfileChanges(name, surname, email, phone, age)
-        );
-
-      await test.step("Verify User Account Details", async () => {
-        await dashboardPage.verifyAccountDetails();
-
-        await test.step("Logout From App", async () => {
-          await dashboardPage.clickLogout();
-        });
-      });
-    });
+  await test.step("Logout", async () => {
+    await dashboardPage.clickLogout();
   });
 });

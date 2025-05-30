@@ -2,25 +2,27 @@ import { test } from "@playwright/test";
 import { AccountCreationAPI } from "../../src/api/api_account_creation_object";
 import { faker } from "@faker-js/faker";
 
-test("API login and account creation via steps", async ({ request }) => {
-  const username = faker.internet.username();
-  const password = faker.internet.password();
-  const startBalance = 25000;
-  const type = "USD";
-  const accountApi = new AccountCreationAPI(request);
+let accountApi: AccountCreationAPI;
+let username: string;
+let password: string;
+let startBalance: number;
+const type = "Test";
 
-  console.log("Used username:", username);
-  console.log("Used password:", password);
-
-  let accessToken: string;
-
-  await test.step("Login via API and get access token", async () => {
-    accessToken = await accountApi.loginAPI(username, password);
-    console.log("Access token obtained:", accessToken);
-    // Žádný expect, vše je uvnitř metody!
+test.beforeEach(async ({ request }) => {
+  accountApi = new AccountCreationAPI(request);
+  username = faker.internet.username(); // POZOR! správně userName(), ne username()
+  password = faker.internet.password();
+  startBalance = faker.number.float({
+    min: 1,
+    max: 100000000,
   });
+});
 
-  await test.step("Create account with access token", async () => {
-    await accountApi.createAccountAPI(accessToken, startBalance, type);
-  });
+test("API Login and Get Access Token", async () => {
+  const accessToken = await accountApi.loginAPI(username, password);
+});
+
+test("API Create Account", async () => {
+  const accessToken = await accountApi.loginAPI(username, password);
+  await accountApi.createAccountAPI(accessToken, startBalance, type);
 });
