@@ -14,18 +14,15 @@ export class AccountCreationAPI {
 
   async loginAPI(username: string, password: string): Promise<string> {
     const response = await this.request.post(this.loginUrl, {
-      data: {
-        username,
-        password,
-      },
-      headers: {
-        "Content-Type": "application/json",
-      },
+      data: { username, password },
+      headers: { "Content-Type": "application/json" },
     });
 
     expect(response.status()).toBe(201);
+
     const body = await response.json();
-    const accessToken = body.access_token;
+    console.log("Login response body:", body);
+    expect(body).toHaveProperty("access_token");
     return body.access_token;
   }
 
@@ -46,6 +43,9 @@ export class AccountCreationAPI {
     });
 
     expect(response.status()).toBe(201);
+
+    console.log("Account creation response status:", response.status());
+    console.log("Account creation response body:", await response.text());
     return response;
   }
 
@@ -55,7 +55,7 @@ export class AccountCreationAPI {
     startBalance: number,
     type: string
   ): Promise<APIResponse> {
-    await this.loginAPI(username, password);
-    return this.createAccountAPI(startBalance, type);
+    const accessToken = await this.loginAPI(username, password);
+    return this.createAccountAPI(accessToken, startBalance, type);
   }
 }

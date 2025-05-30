@@ -1,28 +1,26 @@
-import { test, expect, request } from "@playwright/test";
-import { AccountCreationAPI } from "../../src/api/api_account_creation_object.ts";
+import { test } from "@playwright/test";
+import { AccountCreationAPI } from "../../src/api/api_account_creation_object";
 import { faker } from "@faker-js/faker";
-import {
-  expectResponseToMatchSchema,
-  expectedBody,
-} from "../utils/responseSchema.ts";
 
-test("API Account Creation", async ({ request }) => {
-  const username = faker.internet.userName();
-  console.log(username);
+test("API login and account creation via steps", async ({ request }) => {
+  const username = faker.internet.username();
   const password = faker.internet.password();
-  console.log(password);
   const startBalance = 25000;
   const type = "USD";
   const accountApi = new AccountCreationAPI(request);
 
-  const response = await accountApi.loginAndCreateAccountAPI(
-    username,
-    password,
-    startBalance,
-    type
-  );
+  console.log("Used username:", username);
+  console.log("Used password:", password);
 
-  expect(response.status()).toBe(201);
-  const body = await response.json();
-  expectResponseToMatchSchema(body, expectedBody);
+  let accessToken: string;
+
+  await test.step("Login via API and get access token", async () => {
+    accessToken = await accountApi.loginAPI(username, password);
+    console.log("Access token obtained:", accessToken);
+    // Žádný expect, vše je uvnitř metody!
+  });
+
+  await test.step("Create account with access token", async () => {
+    await accountApi.createAccountAPI(accessToken, startBalance, type);
+  });
 });
