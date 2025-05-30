@@ -1,5 +1,5 @@
 import { test } from "@playwright/test";
-import { AccountCreationAPI } from "../../src/api/api_account_creation_object";
+import { AccountCreationAPI } from "../../src/api/api_account_flow";
 import { faker } from "@faker-js/faker";
 
 let accountApi: AccountCreationAPI;
@@ -10,7 +10,7 @@ const type = "Test";
 
 test.beforeEach(async ({ request }) => {
   accountApi = new AccountCreationAPI(request);
-  username = faker.internet.username(); // POZOR! správně userName(), ne username()
+  username = faker.internet.username();
   password = faker.internet.password();
   startBalance = faker.number.float({
     min: 1,
@@ -26,3 +26,4 @@ test("API Create Account", async () => {
   const accessToken = await accountApi.loginAPI(username, password);
   await accountApi.createAccountAPI(accessToken, startBalance, type);
 });
+export { AccountCreationAPI };
