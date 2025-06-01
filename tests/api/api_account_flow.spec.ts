@@ -27,3 +27,4 @@ test("API Create Account", async () => {
   await accountApi.createAccountAPI(accessToken, startBalance, type);
 });
 export { AccountCreationAPI };
+

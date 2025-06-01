@@ -21,13 +21,13 @@
   "devDependencies": {
     "@eslint/js": "^9.27.0",
     "@playwright/test": "^1.52.0",
+    "@types/node": "^22.13.14",
     "globals": "^16.1.0",
-    "prettier": "^3.5.3",
-    "@types/node": "^22.13.14"
+    "prettier": "^3.5.3"
   },
   "dependencies": {
-    "dotenv": "^16.5.0",
     "@faker-js/faker": "^9.7.0",
-    "dayjs": "^1.11.13"
+    "dayjs": "^1.11.13",
+    "dotenv": "^16.5.0"
   }
 }

@@ -1,6 +1,5 @@
 import { test, expect } from "@playwright/test";
 import { LoginPage } from "../../src/pages/tegb/login_page";
-import { RegistrationPage } from "../../src/pages/tegb/registration_page";
 import { DashboardPage } from "../../src/pages/tegb/dashboard_page";
 import { AccountCreationAPI } from "../../src/api/api_account_flow";
 import { faker } from "@faker-js/faker";
@@ -11,7 +10,6 @@ import {
 
 test("E2E User Setup", async ({ page, request }) => {
   const loginPage = new LoginPage(page);
-  const registrationPage = new RegistrationPage(page);
   const dashboardPage = new DashboardPage(page);
   const accountApi = new AccountCreationAPI(request);
 
@@ -34,6 +32,21 @@ test("E2E User Setup", async ({ page, request }) => {
       )
       .then((register) => register.submitRegistrationForm())
       .then((login) => login.verifyRegistrationSuccess());
+
+    console.log(
+      `User registered with username: ${username}, email: ${email}, password: ${password}`
+    );
+  });
+
+  await test.step("Create account (API)", async () => {
+    const response = await accountApi.loginAndCreateAccountAPI(
+      username,
+      password,
+      startBalance,
+      type
+    );
+    const body = await response.json();
+    expectResponseToMatchSchema(body, expectedBody(type, startBalance));
   });
 
   await test.step("Login user", async () => {
@@ -47,19 +60,11 @@ test("E2E User Setup", async ({ page, request }) => {
     await dashboardPage
       .fillAccountProfile(name, surname, email, phone, age)
       .then((dashboard) =>
+        dashboard.checkAndRefillProfile(name, surname, email, phone, age)
+      )
+      .then((dashboard) =>
         dashboard.verifyProfileChanges(name, surname, email, phone, age)
       );
-  });
-
-  await test.step("Create account (API)", async () => {
-    const response = await accountApi.loginAndCreateAccountAPI(
-      username,
-      password,
-      startBalance,
-      type
-    );
-    const body = await response.json();
-    expectResponseToMatchSchema(body, expectedBody(type, startBalance));
   });
 
   await test.step("Check account details", async () => {
