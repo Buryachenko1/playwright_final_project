@@ -12,7 +12,7 @@ test.beforeEach(async ({ request }) => {
   accountApi = new AccountCreationAPI(request);
   username = faker.internet.username();
   password = faker.internet.password();
-  startBalance = faker.number.float({
+  startBalance = faker.number.int({
     min: 1,
     max: 100000000,
   });

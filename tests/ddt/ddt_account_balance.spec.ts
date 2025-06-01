@@ -1,38 +1,42 @@
-import { test, expect, request as playwrightRequest } from "@playwright/test";
-import { AccountCreationAPI } from "../api/api_account_flow.spec.ts";
-import ddtData from "../../src/assets/ddt_data.json";
+import { test } from "@playwright/test";
+import { AccountCreationAPI } from "../../src/api/api_account_flow";
+import ddtData from "../../src/assets/ddt/ddt_data.json";
+import {
+  expectedBody,
+  expectResponseToMatchSchema,
+} from "../utils/responseSchema.ts";
 
-test.describe("Account creation DDT - forEach style", () => {
-  let accountApi: AccountCreationAPI;
-  let apiRequest: any;
+test.describe("DDT Account Creation", () => {
+  let accessToken: string;
 
-  const username = "testuser";
-  const password = "testpassword";
+  const username = "evbu";
+  const password = "Heslo.123";
 
-  test.beforeAll(async ({ playwright }) => {
-    apiRequest = await playwrightRequest.newContext();
-    accountApi = new AccountCreationAPI(apiRequest);
+  test.beforeAll(async ({ request }) => {
+    const accountApi = new AccountCreationAPI(request);
+    accessToken = await accountApi.loginAPI(username, password);
   });
 
   ddtData.forEach((data, index) => {
     const newType = `test ${index + 1}`;
+    test(`Create Account With startBalance: ${data.startBalance} and type: ${newType}`, async ({
+      request,
+    }) => {
+      const accountApi = new AccountCreationAPI(request);
 
-    test("Data Driven Account Creation", async () => {
-      const response = await accountApi.loginAndCreateAccountAPI(
-        username,
-        password,
+      const response = await accountApi.createAccountAPI(
+        accessToken,
         data.startBalance,
         newType
       );
       const body = await response.json();
-
-      expect(body).toHaveProperty("id");
-      expect(body.startBalance).toBe(data.startBalance);
-      expect(body.type).toBe(newType);
+      expectResponseToMatchSchema(
+        body,
+        expectedBody(newType, data.startBalance)
+      );
+      console.log(
+        `Account created with startBalance: ${data.startBalance} and type: ${newType}`
+      );
     });
-  });
-
-  test.afterAll(async () => {
-    await apiRequest.dispose();
   });
 });

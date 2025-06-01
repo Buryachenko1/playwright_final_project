@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 import { LoginPage } from "../../src/pages/tegb/login_page";
 import { RegistrationPage } from "../../src/pages/tegb/registration_page";
 import { DashboardPage } from "../../src/pages/tegb/dashboard_page";
-import { AccountCreationAPI } from "../../src/api/api_account_flow.ts";
+import { AccountCreationAPI } from "../../src/api/api_account_flow";
 import { faker } from "@faker-js/faker";
 import {
   expectedBody,
