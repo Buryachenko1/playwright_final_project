@@ -18,13 +18,12 @@ test.beforeEach(async ({ request }) => {
   });
 });
 
-test("API Login and Get Access Token", async () => {
+test("@login @smoke API Login and Get Access Token", async () => {
   const accessToken = await accountApi.loginAPI(username, password);
 });
 
-test("API Create Account", async () => {
+test("API Create Account", { tag: "@create account" }, async () => {
   const accessToken = await accountApi.loginAPI(username, password);
   await accountApi.createAccountAPI(accessToken, startBalance, type);
 });
 export { AccountCreationAPI };
-

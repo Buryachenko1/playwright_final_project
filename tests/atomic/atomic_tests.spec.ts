@@ -22,7 +22,7 @@ test.describe("TegB Atomic Tests", () => {
       await dashboardPage.verifyDashboardIsVisible();
     });
 
-    await test.step("Verify Dashboard Header", async () => {
+    await test.step("@dashboard @header Verify Dashboard Header", async () => {
       await expect.soft(dashboardPage.headerLogo).toBeVisible();
       await expect
         .soft(dashboardPage.headerLogo)
@@ -38,7 +38,7 @@ test.describe("TegB Atomic Tests", () => {
         .toHaveText(tegbTexts.general.logout);
     });
 
-    await test.step("Verify Dashboard Sidebar", async () => {
+    await test.step("@dashboard @sidebar Verify Dashboard Sidebar", async () => {
       await expect.soft(dashboardPage.sidebar).toBeVisible();
       await expect.soft(dashboardPage.sidebarHomeItem).toBeVisible();
       await expect
@@ -58,7 +58,7 @@ test.describe("TegB Atomic Tests", () => {
         .toHaveText(tegbTexts.sidebar.support);
     });
 
-    await test.step("Verify Profile Section", async () => {
+    await test.step("@dashboard @profile Verify Profile Section", async () => {
       await expect.soft(dashboardPage.profileHeader).toBeVisible();
       await expect
         .soft(dashboardPage.profileHeader)
@@ -90,7 +90,7 @@ test.describe("TegB Atomic Tests", () => {
       await expect.soft(dashboardPage.editAccountButton).toBeEnabled();
     });
 
-    await test.step("Verify Account Section", async () => {
+    await test.step("@dashboard @account Verify Account Section", async () => {
       await expect.soft(dashboardPage.accountNumberHeading).toBeVisible();
       await expect
         .soft(dashboardPage.accountNumberHeading)
@@ -108,7 +108,7 @@ test.describe("TegB Atomic Tests", () => {
       await expect.soft(dashboardPage.accountTypeValue).toBeVisible();
     });
 
-    await test.step("Verify Footer", async () => {
+    await test.step("@footer Verify Footer", async () => {
       await expect.soft(dashboardPage.footer).toBeVisible();
       await expect
         .soft(dashboardPage.footerText)

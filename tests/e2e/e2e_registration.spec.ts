@@ -8,7 +8,7 @@ import {
   expectResponseToMatchSchema,
 } from "../utils/responseSchema.ts";
 
-test("E2E User Setup", async ({ page, request }) => {
+test("@e2e, @regression E2E User Setup", async ({ page, request }) => {
   const loginPage = new LoginPage(page);
   const dashboardPage = new DashboardPage(page);
   const accountApi = new AccountCreationAPI(request);
