@@ -26,6 +26,7 @@ export class LoginPage {
 
   async openTegB(): Promise<LoginPage> {
     await this.page.goto(this.url);
+
     return this;
   }
 
@@ -33,18 +34,21 @@ export class LoginPage {
     await expect(this.usernameInput).toBeVisible();
     await this.usernameInput.fill(username);
     await expect(this.usernameInput).toHaveValue(username);
+
     return this;
   }
   async typePassword(password: string): Promise<LoginPage> {
     await expect(this.passwordInput).toBeVisible();
     await this.passwordInput.fill(password);
     await expect(this.passwordInput).toHaveValue(password);
+
     return this;
   }
   async submitLoginForm(): Promise<DashboardPage> {
     await expect(this.loginButton).toBeVisible();
     await expect(this.loginButton).toHaveText("Přihlásit se");
     await this.loginButton.click();
+
     return new DashboardPage(this.page);
   }
   async loginWithCredentials(
@@ -53,11 +57,13 @@ export class LoginPage {
   ): Promise<DashboardPage> {
     await this.typeUsername(username);
     await this.typePassword(password);
+
     return this.submitLoginForm();
   }
   async clickRegistration(): Promise<RegistrationPage> {
     await expect(this.registrationButton).toBeVisible();
     await this.registrationButton.click();
+
     return new RegistrationPage(this.page);
   }
   async verifyRegistrationSuccess(): Promise<LoginPage> {

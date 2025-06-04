@@ -1,7 +1,7 @@
-import { test, expect } from "@playwright/test";
+import { test } from "@playwright/test";
 import { LoginPage } from "../../src/pages/tegb/login_page";
-import { DashboardPage } from "../../src/pages/tegb/dashboard_page";
-import { AccountCreationAPI } from "../../src/api/api_account_flow";
+import { DashboardPage } from "../../src/pages/tegb/dashboard_page.ts";
+import { AccountCreationAPI } from "../../src/api/api_flow.ts";
 import { faker } from "@faker-js/faker";
 import {
   expectedBody,
@@ -57,18 +57,18 @@ test("@e2e, @regression E2E User Setup", async ({ page, request }) => {
   });
 
   await test.step("Update profile", async () => {
-    await dashboardPage
+    await dashboardPage.profileDetail
       .fillAccountProfile(name, surname, email, phone, age)
-      .then((dashboard) =>
-        dashboard.checkAndRefillProfile(name, surname, email, phone, age)
+      .then((section) =>
+        section.checkAndRefillProfile(name, surname, email, phone, age)
       )
-      .then((dashboard) =>
-        dashboard.verifyProfileChanges(name, surname, email, phone, age)
+      .then((section) =>
+        section.verifyProfileChanges(name, surname, email, phone, age)
       );
   });
 
   await test.step("Check account details", async () => {
-    await dashboardPage.verifyAccountDetails();
+    await dashboardPage.accountDetail.verifyAccountDetails();
   });
 
   await test.step("Logout", async () => {

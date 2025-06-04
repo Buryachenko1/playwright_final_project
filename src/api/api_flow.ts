@@ -1,18 +1,33 @@
 import { APIRequestContext, APIResponse, expect } from "@playwright/test";
-import { RegistrationPage } from "../pages/tegb/registration_page";
+import { baseUrl } from "../config.ts";
 
 export class AccountCreationAPI {
   private readonly request: APIRequestContext;
-  private readonly registerUrl =
-    "https://tegb-backend-877a0b063d29.herokuapp.com/tegb/accounts/create";
-  private readonly loginUrl =
-    "https://tegb-backend-877a0b063d29.herokuapp.com/tegb/login";
+  private readonly baseUrl = baseUrl;
+  private readonly registerUrl = `${this.baseUrl}/tegb/accounts/create`;
+  private readonly loginUrl = `${this.baseUrl}/tegb/login`;
 
   constructor(request: APIRequestContext) {
     this.request = request;
   }
 
-  async loginAPI(username: string, password: string): Promise<string> {
+  async registerUser(
+    username: string,
+    password: string,
+    email: string
+  ): Promise<APIResponse> {
+    const response = await this.request.post(`${this.registerUrl}`, {
+      data: {
+        username,
+        password,
+        email,
+      },
+    });
+    expect(response.status()).toBe(201);
+    return response;
+  }
+
+  async loginUser(username: string, password: string): Promise<string> {
     const response = await this.request.post(this.loginUrl, {
       data: { username, password },
       headers: { "Content-Type": "application/json" },
@@ -37,7 +52,6 @@ export class AccountCreationAPI {
         type,
       },
       headers: {
-        "Content-Type": "application/json",
         Authorization: `Bearer ${accessToken}`,
       },
     });
@@ -52,7 +66,7 @@ export class AccountCreationAPI {
     startBalance: number,
     type: string
   ): Promise<APIResponse> {
-    const accessToken = await this.loginAPI(username, password);
+    const accessToken = await this.loginUser(username, password);
     return this.createAccountAPI(accessToken, startBalance, type);
   }
 }

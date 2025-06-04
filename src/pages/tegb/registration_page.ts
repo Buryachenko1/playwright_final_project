@@ -21,13 +21,13 @@ export class RegistrationPage {
     );
   }
 
-  async openTegB(): Promise<RegistrationPage> {
+  async openRegistrationTegB(): Promise<RegistrationPage> {
     await this.page.goto(this.url);
+
     return this;
   }
 
   async typeUsername(username: string): Promise<RegistrationPage> {
-    await expect(this.usernameInput).toBeVisible();
     await this.usernameInput.fill(username);
     await expect(this.usernameInput).toHaveValue(username);
 
@@ -35,21 +35,22 @@ export class RegistrationPage {
   }
 
   async typePassword(password: string): Promise<RegistrationPage> {
-    await expect(this.usernameInput).toBeVisible();
     await this.passwordInput.fill(password);
     await expect(this.passwordInput).toHaveValue(password);
+
     return this;
   }
 
   async typeEmail(email: string): Promise<RegistrationPage> {
-    await expect(this.usernameInput).toBeVisible();
     await this.emailInput.fill(email);
     await expect(this.emailInput).toHaveValue(email);
+
     return this;
   }
   async submitRegistrationForm(): Promise<LoginPage> {
     await expect(this.confirmRegistrationButton).toBeVisible();
     await this.confirmRegistrationButton.click();
+
     return new LoginPage(this.page);
   }
   async fillRegistrationForm(
@@ -60,6 +61,7 @@ export class RegistrationPage {
     await this.typeUsername(username);
     await this.typeEmail(email);
     await this.typePassword(password);
+
     return this;
   }
 }

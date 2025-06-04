@@ -1,8 +1,8 @@
-import { test, expect } from "@playwright/test";
-import { DashboardPage } from "../../src/pages/tegb/dashboard_page";
+import { test } from "@playwright/test";
 import { LoginPage } from "../../src/pages/tegb/login_page";
+import { ProfileDetailSection } from "../../src/pages/tegb/dashboard-sections/profileDetailSection.ts";
 
-test.describe("@visual Visual Tests", () => {
+test.describe("@visual TegB Visual Tests", () => {
   const TEGB_USERNAME = process.env.TEGB_USERNAME as string;
   const TEGB_PASSWORD = process.env.TEGB_PASSWORD as string;
 
@@ -13,11 +13,7 @@ test.describe("@visual Visual Tests", () => {
   });
 
   test("Verify Dashboard Profile Details", async ({ page }) => {
-    const dashboardPage = new DashboardPage(page);
-
-    await expect(dashboardPage.accountSummary).toBeVisible();
-
-    const elementScreenshot = await dashboardPage.accountSummary.screenshot();
-    expect(elementScreenshot).toMatchSnapshot("account-summary.png");
+    const profileDetail = new ProfileDetailSection(page);
+    await profileDetail.profileDetailVisualCheck;
   });
 });

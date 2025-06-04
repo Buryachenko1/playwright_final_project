@@ -59,53 +59,81 @@ test.describe("TegB Atomic Tests", () => {
     });
 
     await test.step("@dashboard @profile Verify Profile Section", async () => {
-      await expect.soft(dashboardPage.profileHeader).toBeVisible();
       await expect
-        .soft(dashboardPage.profileHeader)
+        .soft(dashboardPage.profileDetail.profileHeader)
+        .toBeVisible();
+      await expect
+        .soft(dashboardPage.profileDetail.profileHeader)
         .toHaveText(tegbTexts.profile.detailsHeader);
-      await expect.soft(dashboardPage.profileNameInput).toBeVisible();
       await expect
-        .soft(dashboardPage.profileNameInput)
+        .soft(dashboardPage.profileDetail.profileNameInput)
+        .toBeVisible();
+      await expect
+        .soft(dashboardPage.profileDetail.profileNameInput)
         .toContainText(tegbTexts.profile.name);
-      await expect.soft(dashboardPage.profileSurnameInput).toBeVisible();
       await expect
-        .soft(dashboardPage.profileSurnameInput)
+        .soft(dashboardPage.profileDetail.profileSurnameInput)
+        .toBeVisible();
+      await expect
+        .soft(dashboardPage.profileDetail.profileSurnameInput)
         .toContainText(tegbTexts.profile.surname);
-      await expect.soft(dashboardPage.profileEmailInput).toBeVisible();
       await expect
-        .soft(dashboardPage.profileEmailInput)
+        .soft(dashboardPage.profileDetail.profileEmailInput)
+        .toBeVisible();
+      await expect
+        .soft(dashboardPage.profileDetail.profileEmailInput)
         .toContainText(tegbTexts.profile.email);
-      await expect.soft(dashboardPage.profilePhoneInput).toBeVisible();
       await expect
-        .soft(dashboardPage.profilePhoneInput)
+        .soft(dashboardPage.profileDetail.profilePhoneInput)
+        .toBeVisible();
+      await expect
+        .soft(dashboardPage.profileDetail.profilePhoneInput)
         .toContainText(tegbTexts.profile.phone);
-      await expect.soft(dashboardPage.profileAgeInput).toBeVisible();
       await expect
-        .soft(dashboardPage.profileAgeInput)
+        .soft(dashboardPage.profileDetail.profileAgeInput)
+        .toBeVisible();
+      await expect
+        .soft(dashboardPage.profileDetail.profileAgeInput)
         .toContainText(tegbTexts.profile.age);
-      await expect.soft(dashboardPage.editAccountButton).toBeVisible();
       await expect
-        .soft(dashboardPage.editAccountButton)
+        .soft(dashboardPage.profileDetail.editAccountButton)
+        .toBeVisible();
+      await expect
+        .soft(dashboardPage.profileDetail.editAccountButton)
         .toContainText(tegbTexts.profile.editButton);
-      await expect.soft(dashboardPage.editAccountButton).toBeEnabled();
+      await expect
+        .soft(dashboardPage.profileDetail.editAccountButton)
+        .toBeEnabled();
     });
 
     await test.step("@dashboard @account Verify Account Section", async () => {
-      await expect.soft(dashboardPage.accountNumberHeading).toBeVisible();
       await expect
-        .soft(dashboardPage.accountNumberHeading)
+        .soft(dashboardPage.accountDetail.accountNumberHeading)
+        .toBeVisible();
+      await expect
+        .soft(dashboardPage.accountDetail.accountNumberHeading)
         .toHaveText(tegbTexts.accounts.number);
-      await expect.soft(dashboardPage.accountNumberValue).toBeVisible();
-      await expect.soft(dashboardPage.accountBalanceHeading).toBeVisible();
       await expect
-        .soft(dashboardPage.accountBalanceHeading)
+        .soft(dashboardPage.accountDetail.accountNumberValue)
+        .toBeVisible();
+      await expect
+        .soft(dashboardPage.accountDetail.accountBalanceHeading)
+        .toBeVisible();
+      await expect
+        .soft(dashboardPage.accountDetail.accountBalanceHeading)
         .toHaveText(tegbTexts.accounts.balance);
-      await expect.soft(dashboardPage.accountBalanceValue).toBeVisible();
-      await expect.soft(dashboardPage.accountTypeHeading).toBeVisible();
       await expect
-        .soft(dashboardPage.accountTypeHeading)
+        .soft(dashboardPage.accountDetail.accountBalanceValue)
+        .toBeVisible();
+      await expect
+        .soft(dashboardPage.accountDetail.accountTypeHeading)
+        .toBeVisible();
+      await expect
+        .soft(dashboardPage.accountDetail.accountTypeHeading)
         .toHaveText(tegbTexts.accounts.type);
-      await expect.soft(dashboardPage.accountTypeValue).toBeVisible();
+      await expect
+        .soft(dashboardPage.accountDetail.accountTypeValue)
+        .toBeVisible();
     });
 
     await test.step("@footer Verify Footer", async () => {
