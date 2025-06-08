@@ -60,9 +60,6 @@ test("@e2e, @regression E2E User Setup", async ({ page, request }) => {
     await dashboardPage.profileDetail
       .fillAccountProfile(name, surname, email, phone, age)
       .then((section) =>
-        section.checkAndRefillProfile(name, surname, email, phone, age)
-      )
-      .then((section) =>
         section.verifyProfileChanges(name, surname, email, phone, age)
       );
   });

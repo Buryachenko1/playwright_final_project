@@ -138,32 +138,6 @@ export class ProfileDetailSection {
     return this;
   }
 
-  //Test na vyplnění profilu není stabilní, občas selže, protože se nevyplní všechny hodnoty. Proto tato funkce
-  async checkAndRefillProfile(
-    name: string,
-    surname: string,
-    email: string,
-    phone: string,
-    age: number
-  ): Promise<ProfileDetailSection> {
-    const nameValue = (await this.changeNameInput.inputValue()).trim();
-    const surnameValue = (await this.changeSurnameInput.inputValue()).trim();
-    const emailValue = (await this.changeEmailInput.inputValue()).trim();
-    const phoneValue = (await this.changePhoneInput.inputValue()).trim();
-    const ageValue = (await this.changeAgeInput.inputValue()).trim();
-
-    if (
-      !nameValue ||
-      !surnameValue ||
-      !emailValue ||
-      !phoneValue ||
-      !ageValue
-    ) {
-      await this.fillAccountProfile(name, surname, email, phone, Number(age));
-    }
-    return this;
-  }
-
   async fillAccountProfile(
     name: string,
     surname: string,
