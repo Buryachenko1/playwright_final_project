@@ -5,11 +5,13 @@ export class AccountCreationAPI {
   private readonly request: APIRequestContext;
   private readonly registerUrl: string;
   private readonly loginUrl: string;
+  private readonly createAccountUrl: string;
 
   constructor(request: APIRequestContext) {
     this.request = request;
-    this.registerUrl = `${baseUrl}/tegb/accounts/create`;
+    this.registerUrl = `${baseUrl}/tegb/register`;
     this.loginUrl = `${baseUrl}/tegb/login`;
+    this.createAccountUrl = `${baseUrl}/tegb/accounts/create`;
   }
 
   async registerUser(
@@ -17,7 +19,7 @@ export class AccountCreationAPI {
     password: string,
     email: string
   ): Promise<APIResponse> {
-    const response = await this.request.post(`${this.registerUrl}`, {
+    const response = await this.request.post(this.registerUrl, {
       data: {
         username,
         password,
@@ -34,13 +36,10 @@ export class AccountCreationAPI {
       data: { username, password },
     });
     expect(response.status()).toBe(201);
-
-    const body = await response.json();
-    expect(body).toHaveProperty("access_token");
-    return body.access_token;
+    return response;
   }
 
-  async loginAndgetAccessToken(
+  async loginAndGetAccessToken(
     username: string,
     password: string
   ): Promise<string> {
@@ -56,7 +55,7 @@ export class AccountCreationAPI {
     startBalance: number,
     type: string
   ): Promise<APIResponse> {
-    const response = await this.request.post(this.registerUrl, {
+    const response = await this.request.post(this.createAccountUrl, {
       data: { startBalance, type },
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -72,7 +71,7 @@ export class AccountCreationAPI {
     startBalance: number,
     type: string
   ): Promise<APIResponse> {
-    const accessToken = await this.loginAndgetAccessToken(username, password);
+    const accessToken = await this.loginAndGetAccessToken(username, password);
     return this.createAccountAPI(accessToken, startBalance, type);
   }
 }

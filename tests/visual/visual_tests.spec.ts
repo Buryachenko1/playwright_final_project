@@ -14,6 +14,6 @@ test.describe("@visual TegB Visual Tests", () => {
 
   test("Verify Dashboard Profile Details", async ({ page }) => {
     const profileDetail = new ProfileDetailSection(page);
-    await profileDetail.profileDetailVisualCheck;
+    await profileDetail.profileDetailVisualCheck("profileDetail");
   });
 });
