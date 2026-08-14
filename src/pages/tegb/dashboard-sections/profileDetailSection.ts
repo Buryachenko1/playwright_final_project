@@ -35,18 +35,18 @@ export class ProfileDetailSection {
       "div[data-testid='update-message']"
     );
     this.changeNameInput = page.locator(
-      "input[data-testid='chage-name-input']"
+      "input[data-testid='chage-name-input'], input[data-testid='change-name-input']"
     );
     this.changeSurnameInput = page.locator(
-      "input[data-testid='chage-surname-input']"
+      "input[data-testid='chage-surname-input'], input[data-testid='change-surname-input']"
     );
     this.changeEmailInput = page.locator(
-      "input[data-testid='chage-email-input']"
+      "input[data-testid='chage-email-input'], input[data-testid='change-email-input']"
     );
     this.changePhoneInput = page.locator(
-      "input[data-testid='chage-phone-input']"
+      "input[data-testid='chage-phone-input'], input[data-testid='change-phone-input']"
     );
-    this.changeAgeInput = page.locator("input[data-testid='chage-age-input']");
+    this.changeAgeInput = page.locator("input[data-testid='chage-age-input'], input[data-testid='change-age-input']");
     this.editAccountButton = page.locator(
       "button[data-testid='toggle-edit-profile-button']"
     );
