@@ -1,0 +1,22 @@
+[
+  {
+    "startBalance": 0,
+    "type": "Test"
+  },
+  {
+    "startBalance": 200000.52,
+    "type": "Test"
+  },
+  {
+    "startBalance": -12345.0,
+    "type": "Test"
+  },
+  {
+    "startBalance": -196000921,
+    "type": "Test"
+  },
+  {
+    "startBalance": 298000123,
+    "type": "Test"
+  }
+]
